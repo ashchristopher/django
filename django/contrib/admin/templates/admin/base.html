@@ -7,6 +7,18 @@
 <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
 {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
 <script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
+<script type="text/javascript" src="{% static "admin/js/jquery.min.js" %}"></script>
+<script type="text/javascript" src="{% static "admin/js/jquery.init.js" %}"></script>
+<script type="text/javascript">
+    (function($) {
+        $(document).ready(function() {
+            $('a[href="{% url 'admin:logout' %}"]').click(function(ev) {
+                ev.preventDefault();
+                $('#logout-form').submit();
+            });
+        });
+    })(django.jQuery);
+</script>
 {% block extrahead %}{% endblock %}
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
 </head>
@@ -75,5 +87,6 @@
 </div>
 <!-- END Container -->
 
+<form id="logout-form" action="{% url 'admin:logout' %}" method="post">{% csrf_token %}</form>
 </body>
 </html>
